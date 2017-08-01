@@ -18,7 +18,7 @@ class Employee < ActiveRecord::Base
   validates :last_name,
             presence: true
 
-  validates :hourl_rate,
+  validates :hourly_rate,
             numericality: true,
             length: {minimum: 40, maximum: 200}
 
@@ -39,9 +39,11 @@ class Store < ActiveRecord::Base
   validate :carry_mens_or_womens_apparel,
             on: :create
 
+  private
+
   def carry_mens_or_womens_apparel
-    unless :mens_apparel == false && :womens_apparel == false
-      errors.add("Sorry, ", "there should be at least one of the men's or women's apparel.")
+    if self.mens_apparel == nil && self.womens_apparel == nil
+      errors.add(self.name, "should have at least one of the men's or women's apparel.")
     end
   end
 end
